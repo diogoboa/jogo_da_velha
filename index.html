@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    
+    <head>
+        <title>Jogo da Velha</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+       
+        
+        
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" id="theme-styles">
+     
+        
+        <script>
+            var preenchimento = [0,0,0,0,0,0,0,0,0];
+            var vez = 1;
+            
+            function click_no_botao(n_posicao)
+            {
+                
+                if(verifica_preenchimento(n_posicao) === true)
+                {
+                    information_error('Erro!', 'Posição já está preenchida', false, 2000);
+                   
+                }
+                else
+                {
+                    preenche_posicao(n_posicao, vez);
+                    muda_vez();
+                    
+                }
+                
+                let status_do_jogo = verifica_vitoria();
+                
+                if(status_do_jogo ===1 || status_do_jogo===2 || status_do_jogo ===3)
+                {
+                    if(status_do_jogo ===1)
+                        information_ok('Parabéns!', 'X ganhou!', false, 2000);
+                    else if (status_do_jogo ===2)
+                        information_ok('Parabéns!', 'O ganhou!', false, 2000);
+                    else
+                        information_error('Velha', 'Deu Velha!', false, 2000);
+                    resetar();
+                }
+                
+                
+            }
+            
+            
+            function verifica_preenchimento(n_posicao)
+            {
+                //retorna true se preenchido, false caso nao
+                
+                
+                if(preenchimento[n_posicao - 1] === 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            
+            function preenche_posicao(n_posicao, valor)
+            {
+                
+                let caracter_preencher;
+                if(valor%2 ===0)
+                {
+                    caracter_preencher = 'O';
+                    preenchimento[n_posicao-1] = 2;
+                }
+                    
+                else
+                {
+                    preenchimento[n_posicao-1] = 1;
+                    caracter_preencher = 'X';
+                }
+                    
+                
+                
+                
+                
+                if (n_posicao===1)
+                    document.getElementById('preenchimento_1').innerHTML = caracter_preencher;
+                if (n_posicao===2)
+                    document.getElementById('preenchimento_2').innerHTML = caracter_preencher;
+                if (n_posicao===3)
+                    document.getElementById('preenchimento_3').innerHTML = caracter_preencher;
+                if (n_posicao===4)
+                    document.getElementById('preenchimento_4').innerHTML = caracter_preencher;
+                if (n_posicao===5)
+                    document.getElementById('preenchimento_5').innerHTML = caracter_preencher;
+                if (n_posicao===6)
+                    document.getElementById('preenchimento_6').innerHTML = caracter_preencher;
+                if (n_posicao===7)
+                    document.getElementById('preenchimento_7').innerHTML = caracter_preencher;
+                if (n_posicao===8)
+                    document.getElementById('preenchimento_8').innerHTML = caracter_preencher;
+                if (n_posicao===9)
+                    document.getElementById('preenchimento_9').innerHTML = caracter_preencher;
+                
+                
+            }
+            function muda_vez()
+            {
+                if(vez%2 ===1)
+                {
+                    document.getElementById('txt_vez').innerHTML = "É a vez do O";
+                }
+                else
+                {
+                    document.getElementById('txt_vez').innerHTML = "É a vez do X";
+                }
+                vez++;
+                    
+            }
+            
+            function verifica_vitoria()
+            {
+                //retorna 0 se nada acontece; 1 se o X venceu; 2 se O venceu; 3 se deu velha;
+               // alert('>>>>'+(vez-1) + " " + ((vez-1)===9));
+                if((vez-1)===9)
+                    return 3;
+                
+        
+                else if(preenchimento[0] === 1 && preenchimento[1] === 1 && preenchimento[2] === 1 )
+                    return 1; //ganha pela primeira linha
+                else if(preenchimento[3] === 1 && preenchimento[4] === 1 && preenchimento[5] === 1 )
+                    return 1; //ganha pela segunda linha
+                else if(preenchimento[6] === 1 && preenchimento[7] === 1 && preenchimento[8] === 1 )
+                    return 1; //ganha pela terceira linha
+                else if(preenchimento[0] === 1 && preenchimento[3] === 1 && preenchimento[6] === 1 )
+                    return 1; //ganha pela primeira coluna
+                else if(preenchimento[1] === 1 && preenchimento[4] === 1 && preenchimento[7] === 1 )
+                    return 1; //ganha pela segunda coluna
+                else if(preenchimento[2] === 1 && preenchimento[5] === 1 && preenchimento[8] === 1 )
+                    return 1; //ganha pela terceira coluna
+                else if(preenchimento[0] === 1 && preenchimento[4] === 1 && preenchimento[8] === 1 )
+                    return 1; //ganha pela diagonal 1
+                else if(preenchimento[2] === 1 && preenchimento[4] === 1 && preenchimento[6] === 1 )
+                    return 1; //ganha pela diagonal 2
+                
+                
+                
+                else if(preenchimento[0] === 2 && preenchimento[1] === 2 && preenchimento[2] === 2 )
+                    return 2; //ganha pela primeira linha
+                else if(preenchimento[3] === 2 && preenchimento[4] === 2 && preenchimento[5] === 2 )
+                    return 2; //ganha pela segunda linha
+                else if(preenchimento[6] === 2 && preenchimento[7] === 2 && preenchimento[8] === 2 )
+                    return 2; //ganha pela terceira linha
+                else if(preenchimento[0] === 2 && preenchimento[3] === 2 && preenchimento[6] === 2 )
+                    return 2; //ganha pela primeira coluna
+                else if(preenchimento[1] === 2 && preenchimento[4] === 2 && preenchimento[7] === 2 )
+                    return 2; //ganha pela segunda coluna
+                else if(preenchimento[2] === 2 && preenchimento[5] === 2 && preenchimento[8] ===2 )
+                    return 2; //ganha pela terceira coluna
+                else if(preenchimento[0] === 2 && preenchimento[4] === 2 && preenchimento[8] === 2 )
+                    return 2; //ganha pela diagonal 1
+                else if(preenchimento[2] === 2 && preenchimento[4] === 2 && preenchimento[6] === 2 )
+                    return 2; //ganha pela diagonal 2
+                
+        
+                else
+                    return 0;// jogo continua
+            }
+            
+            function resetar()
+            {
+                vez= 0;
+                for(let x=0; x<9;x++)
+                {
+                    preenchimento[x] =0;
+                    document.getElementById('preenchimento_'+(x+1)).innerHTML = "";
+                }
+                muda_vez();
+                
+                
+                
+                
+            }
+            
+            </script>
+            
+            
+            
+            
+            <script>
+            function information_ok(titulo, mensagem, mostrar_confirm_button, timer_em_ms)
+            {
+                Swal.fire({
+                icon: 'success',
+                title: titulo,
+                text: mensagem,
+                showConfirmButton: mostrar_confirm_button,
+                timer: timer_em_ms
+              });
+            }
+            function information_error(titulo, mensagem, mostrar_confirm_button, timer_em_ms)
+            {
+                Swal.fire({
+                icon: 'error',
+                title: titulo,
+                text: mensagem,
+                showConfirmButton: mostrar_confirm_button,
+                timer: timer_em_ms
+              });
+            }
+            
+            
+        </script>
+        
+        <style>
+            
+            table
+            {
+                font-size: 40pt;  
+            }
+           
+            
+            
+            table tr td
+            {
+                border-width: 0px;
+                border-color: red;
+                border-style: solid;
+                width: 100px; 
+                height: 100px;
+                text-align: center;
+            }
+            
+        </style>
+        
+    </head>
+    
+    <body>
+        
+        <div class="h-100 d-flex justify-content-center align-items-center mt-5">
+            <table>
+                <tr>
+                    <td id="preenchimento_1" onclick="click_no_botao(1);" style="border-bottom-width: 2px; border-right-width: 2px;"></td>
+                    <td id="preenchimento_2" onclick="click_no_botao(2);" style="  border-bottom-width: 2px; border-right-width: 2px; "></td>
+                    <td id="preenchimento_3" onclick="click_no_botao(3);" style=" border-bottom-width: 2px;"> </td>
+                </tr>
+                <tr>
+                    <td id="preenchimento_4"  onclick="click_no_botao(4);" style=" border-bottom-width: 2px;  border-right-width: 2px"></td>
+                    <td id="preenchimento_5"  onclick="click_no_botao(5);" style=" border-bottom-width: 2px;  border-right-width: 2px"></td>
+                    <td id="preenchimento_6"  onclick="click_no_botao(6);" style=" border-bottom-width: 2px"></td>
+                </tr>
+                <tr>
+                    <td id="preenchimento_7"  onclick="click_no_botao(7);" style=" border-right-width: 2px"></td>
+                     <td id="preenchimento_8"  onclick="click_no_botao(8);" style=" border-right-width: 2px"></td>
+                    <td id="preenchimento_9"  onclick="click_no_botao(9);" ></td>
+                </tr>
+            </table>
+        
+            
+            
+        </div>
+        <p id="txt_vez" class="h-100 d-flex justify-content-center align-items-center mt-5" style="font-size: 20pt;">É a vez do X</p>
+        <br>
+        <div class="h-100 d-flex justify-content-center align-items-center mt-5">
+            <button  type="button" class="btn btn-warning" onclick="resetar();">Limpar</button>
+        </div>
+    </body>
+</html>
